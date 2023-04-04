@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +48,15 @@ public class LikeablePersonService {
 
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
+    }
+    public LikeablePerson getLikeablePerson(Integer id){
+        Optional<LikeablePerson> likeablePerson=likeablePersonRepository.findById(id);
+            return likeablePerson.get();
+    }
+
+@Transactional //트랜잭션은 private로 전파되지 않는다. 실제 구현체에서 제공하는 sava,delete가 아니라면 트랜잭션 붙이기
+    public RsData<LikeablePerson> delete(LikeablePerson likeablePerson){
+        likeablePersonRepository.delete(likeablePerson);
+    return RsData.of("S-1","(%s)님이 호감상대에서 삭제되었습니다.".formatted(likeablePerson.getToInstaMemberUsername()));
     }
 }
