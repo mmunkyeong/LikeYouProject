@@ -59,7 +59,7 @@
 
 <br>
 
-3. **결과물**
+5. **결과물**
 - 1️⃣  **호감 상대 삭제 구현 화면**
 
   ![Untitled (14)](https://user-images.githubusercontent.com/62290451/230005732-d3497892-a956-4f9e-97cc-b64eb3549622.png)
