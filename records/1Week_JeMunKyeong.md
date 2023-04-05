@@ -12,11 +12,13 @@
 
 ☑ 삭제 후 redirect 구현
 
-☑ 구글/네이버 로그인 구현
+☑ 구글 로그인 구현
 
-☑ 구글/네이버 로그인  성공 시 member 테이블에 정보 추가
+☑ 구글 로그인  성공 시 member 테이블에 정보 추가
 
-☑ 최초 로그인시 가입, 이후는 가입 x
+☑  네이버 로그인 구현
+
+☑  네이버 로그인 성공시 member테이블에 정보 추가
 
 ### N주차 미션 요약
 
@@ -25,19 +27,35 @@
 
 **[접근 방법]**
 
-1. **실습 및 참고 예제**
-- 미션 진행 전 점프 투 스프링부트 2회 복습
-- 점프 투 스프링부트 수정/삭제구현 부분 예제를 참고하여 개발
-
-[링크 3-10 수정과 삭제](https://wikidocs.net/162416)
-
 <br>
 
-2. **목표**
+1. **목표**
 - 호감 목록 중 삭제 버튼 클릭 시 해당 호감 상대를 삭제
-    - likeable_person 테이블에서 해당 호감 상대가 delete 되어야 함
+  - likeable_person 테이블에서 해당 호감 상대가 delete 되어야 함
 - 구글, 네이버 로그인 구현
-    - 구글, 네이버  로그인시  member테이블에  providerTypeCode: GOOGLE, NAVER로 저장
+  - 구글, 네이버  로그인시  member테이블에  providerTypeCode: GOOGLE, NAVER로 저장
+
+2. **호감 목록 삭제**
+- delete 메서드 구현
+- delete 메서드가 적용되어 삭제되는지 DB 확인
+- DB에서 삭제 안됨
+- @Transactional 애너테이션 추가 후 다시 DB 확인
+- DB에서 삭제 성공
+
+3. **구글 로그인**
+- 구글 cloud platform 접속
+- 프로젝트 생성 후 차례대로 단계 진행
+- 발급받은 클라이언트 Id, pw application.yml에 google 추가
+- 구글 로그인 성공
+
+4. **네이버 로그인**
+- Naver Developer 접속
+- 프로젝트 생성 후 차례대로 단계 진행
+- 발급받은 클라이언트 Id, pw application.yml에 naver 추가
+- 네이버 로그인시 username에 고유 id key 외에 다른 정보들도 함께 나오는 문제 발생
+- 네이버 로그인 후 username 로그 찍기
+- 네이버로 로그인 했다면 id만 뽑아서 저장되도록 수정
+
 
 <br>
 
