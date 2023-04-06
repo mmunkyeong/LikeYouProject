@@ -49,14 +49,15 @@ public class LikeablePersonService {
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
     }
-    public LikeablePerson getLikeablePerson(Integer id){
-        Optional<LikeablePerson> likeablePerson=likeablePersonRepository.findById(id);
-            return likeablePerson.get();
+
+    public Optional<LikeablePerson>findById(Long id){
+        return likeablePersonRepository.findById(id);
     }
 
 @Transactional //트랜잭션은 private로 전파되지 않는다. 실제 구현체에서 제공하는 sava,delete가 아니라면 트랜잭션 붙이기
-    public RsData<LikeablePerson> delete(LikeablePerson likeablePerson){
+    public RsData delete(LikeablePerson likeablePerson){
+    String toInstaMemberUsername = likeablePerson.getToInstaMember().getUsername();
         likeablePersonRepository.delete(likeablePerson);
-    return RsData.of("S-1","(%s)님이 호감상대에서 삭제되었습니다.".formatted(likeablePerson.getToInstaMemberUsername()));
+    return RsData.of("S-1","(%s)님에 대한 호감을 취소하셨습니다.".formatted(toInstaMemberUsername));
     }
 }
