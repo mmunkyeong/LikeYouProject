@@ -36,7 +36,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String providerTypeCode = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
 
 
-        if(providerTypeCode.equals("NAVER")){ //naver일 경우 id 추출하기
+       if(providerTypeCode.equals("NAVER")){ //naver일 경우 id 추출하기
            int start= oauthId.indexOf("id=");
            int end=oauthId.indexOf(",");
            oauthId=oauthId.substring(start+3,end);
