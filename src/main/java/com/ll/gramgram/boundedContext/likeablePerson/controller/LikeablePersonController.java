@@ -68,7 +68,7 @@ public class LikeablePersonController {
 
     @PreAuthorize("isAuthenticated()") //로그인 여부 확인
     @PostMapping("/delete/{id}") // 호감 상대 취소, get=> post로 변경 CSRF 공격방어
-    public String deleteLikePerson(@PathVariable Long id){
+    public String delete(@PathVariable Long id){
         LikeablePerson likeablePerson=likeablePersonService.findById(id).orElse(null);
 
         if(likeablePerson==null) return rq.historyBack("취소된 호감입니다.");
