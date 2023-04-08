@@ -67,17 +67,17 @@ public class LikeablePersonController {
     }
 
     @PreAuthorize("isAuthenticated()") //로그인 여부 확인
-    @PostMapping("/delete/{id}") // 호감 상대 취소, get=> post로 변경 CSRF 공격방어
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id){
-        LikeablePerson likeablePerson=likeablePersonService.findById(id).orElse(null);
 
-        if(likeablePerson==null) return rq.historyBack("취소된 호감입니다.");
 
-       if (!Objects.equals(rq.getMember().getInstaMember().getId(), likeablePerson.getFromInstaMember().getId()))
-            return rq.historyBack("권한이 없습니다.");
+        LikeablePerson likeablePerson = likeablePersonService.findById(id).orElse(null);
 
-        RsData deleteRs=likeablePersonService.delete(likeablePerson);
+        RsData canActorDeleteRsData = likeablePersonService.canActorDelete(rq.getMember(), likeablePerson);
 
+        if (canActorDeleteRsData.isFail()) return rq.historyBack(canActorDeleteRsData);
+
+        RsData deleteRs = likeablePersonService.delete(likeablePerson);
         if(deleteRs.isFail()) return rq.historyBack(deleteRs);
         return rq.redirectWithMsg("/likeablePerson/list",deleteRs);
     }
