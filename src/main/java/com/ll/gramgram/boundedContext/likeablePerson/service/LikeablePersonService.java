@@ -61,14 +61,20 @@ public class LikeablePersonService {
 
 @Transactional //트랜잭션은 private로 전파되지 않는다. 실제 구현체에서 제공하는 sava,delete가 아니라면 트랜잭션 붙이기
     public RsData delete(LikeablePerson likeablePerson){
-    String toInstaMemberUsername = likeablePerson.getToInstaMember().getUsername();
+
         likeablePersonRepository.delete(likeablePerson);
-    return RsData.of("S-1","(%s)님에 대한 호감을 취소하셨습니다.".formatted(toInstaMemberUsername));
+    String likeCanceledUsername = likeablePerson.getToInstaMember().getUsername();
+    return RsData.of("S-1", "%s님에 대한 호감을 취소하였습니다.".formatted(likeCanceledUsername));
     }
     public RsData canActorDelete(Member actor, LikeablePerson likeablePerson){
         if (likeablePerson == null) return RsData.of("F-1", "이미 삭제되었습니다.");
 
-        if (!Objects.equals(actor.getInstaMember().getId(), likeablePerson.getFromInstaMember().getId()))
+        // 수행자의 인스타계정 번호
+        long actorInstaMemberId = actor.getInstaMember().getId();
+        // 삭제 대상의 작성자(호감표시한 사람)의 인스타계정 번호
+        long fromInstaMemberId = likeablePerson.getFromInstaMember().getId();
+
+        if (actorInstaMemberId != fromInstaMemberId)
             return RsData.of("F-2", "권한이 없습니다.");
 
         return RsData.of("S-1", "삭제가능합니다.");
