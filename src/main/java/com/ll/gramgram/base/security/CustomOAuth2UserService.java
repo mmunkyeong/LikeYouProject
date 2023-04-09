@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Map;
 
@@ -31,7 +32,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String oauthId = oAuth2User.getName();
 
+
         String providerTypeCode = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
+
+
+       if(providerTypeCode.equals("NAVER")){ //naver일 경우 id 추출하기
+           int start= oauthId.indexOf("id=");
+           int end=oauthId.indexOf(",");
+           oauthId=oauthId.substring(start+3,end);
+        }
 
         String username = providerTypeCode + "__%s".formatted(oauthId);
 
@@ -56,4 +65,6 @@ class CustomOAuth2User extends User implements OAuth2User {
     public String getName() {
         return getUsername();
     }
+
+
 }
