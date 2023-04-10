@@ -61,19 +61,16 @@
         <div class="max-w-2xl w-full px-4">
 
     <form th:action method="POST" class="flex flex-col gap-6"  onsubmit="LoginForm__submit(this); return false;">
-        <div class="form-control">
             <label class="label">
                 <span class="label-text">아이디</span>
             </label>
-            <input type="text" name="username" placeholder="아이디" class="input input-bordered" autofocus />
-        </div>
+        <input type="text" name="username" maxlength="30" placeholder="아이디" class="input input-bordered">
 
-        <div class="form-control">
+
             <label class="label">
                 <span class="label-text">비빌번호</span>
             </label>
-            <input type="password" placeholder="비빌번호" class="input input-bordered" autofocus/>
-        </div>
+        <input type="password" name="password" maxlength="30" placeholder="비밀번호" class="input input-bordered">
 
         <button class="btn btn-block btn-primary gap-1" >
             <i class="fa-solid fa-arrow-right-to-bracket"></i>
