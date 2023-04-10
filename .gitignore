@@ -36,7 +36,3 @@ out/
 ### VS Code ###
 .vscode/
 
-### Spring yml ###
-application.yml
-application-test.yml
-application-oauth.yml
