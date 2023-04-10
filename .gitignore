@@ -35,4 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+application.yml
+application-ouath.yml
+application-test.yml
 
