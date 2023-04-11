@@ -20,9 +20,7 @@ import java.util.Optional;
 public class LikeablePersonService {
     private final LikeablePersonRepository likeablePersonRepository;
     private final InstaMemberService instaMemberService;
-
-    static int cnt=0;
-
+    private boolean update;
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
 
@@ -37,16 +35,24 @@ public class LikeablePersonService {
         InstaMember fromInstaMember = member.getInstaMember();
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
 
+        List<LikeablePerson> toLikeableAttractiveTypeCode=likeablePersonRepository.findByToInstaMemberIdAndAttractiveTypeCode(toInstaMember.getId(),attractiveTypeCode);
+
         //이미 등록한 호감 상대는 등록할 수 x
         List<LikeablePerson> toLikeableList = likeablePersonRepository.findByFromInstaMemberIdAndToInstaMemberId(fromInstaMember.getId(), toInstaMember.getId());
-        if (!toLikeableList.isEmpty()) {
+        if (!toLikeableList.isEmpty()&&!toLikeableAttractiveTypeCode.isEmpty()) {
             return RsData.of("F-3", "이미 호감을 등록한 상대입니다.");
+        }
+
+        // 등록한 호감상대의 사유가 변경 되었다면, likeable db에서 기존에 추가 되었던 것을 삭제
+        else if(!toLikeableList.isEmpty()&&toLikeableAttractiveTypeCode.isEmpty()){
+            update=true;
+            likeablePersonRepository.delete(toLikeableList.get(0));
         }
 
         // 최대 10명까지 등록가능
        List<LikeablePerson> fromlikeablePersonList=likeablePersonRepository.findByFromInstaMemberId(fromInstaMember.getId());
         if(fromlikeablePersonList.size()>9){
-            return RsData.of("F-4","최대 10명까지 등록할 수 있습니다.");
+           return RsData.of("F-4","최대 10명까지 등록할 수 있습니다.");
         }
 
         LikeablePerson likeablePerson = LikeablePerson
@@ -57,6 +63,14 @@ public class LikeablePersonService {
                 .toInstaMemberUsername(toInstaMember.getUsername()) // 중요하지 않음
                 .attractiveTypeCode(attractiveTypeCode) // 1=외모, 2=능력, 3=성격
                 .build();
+
+        // 사유가 변경 되었다면, 사유 변경하여 다시 save
+        if (update==true){
+            LikeablePerson duplicateAttractive=likeablePerson;
+            duplicateAttractive.setAttractiveTypeCode(attractiveTypeCode);
+            likeablePersonRepository.save(duplicateAttractive);
+            return RsData.of("S-1","호감상대 %s유저 사유 변경".formatted(toInstaMember.getUsername()),duplicateAttractive);
+        }
 
         likeablePersonRepository.save(likeablePerson); // 저장
         // 너가 좋아하는 호감표시
