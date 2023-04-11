@@ -21,8 +21,11 @@ public class LikeablePersonService {
     private final LikeablePersonRepository likeablePersonRepository;
     private final InstaMemberService instaMemberService;
 
+    static int cnt=0;
+
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
+
         if ( member.hasConnectedInstaMember() == false ) {
             return RsData.of("F-2", "먼저 본인의 인스타그램 아이디를 입력해야 합니다.");
         }
@@ -30,8 +33,21 @@ public class LikeablePersonService {
         if (member.getInstaMember().getUsername().equals(username)) {
             return RsData.of("F-1", "본인을 호감상대로 등록할 수 없습니다.");
         }
+
         InstaMember fromInstaMember = member.getInstaMember();
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
+
+        //이미 등록한 호감 상대는 등록할 수 x
+        List<LikeablePerson> Likeables = likeablePersonRepository.findByFromInstaMemberIdAndToInstaMemberId(fromInstaMember.getId(), toInstaMember.getId());
+        if (!Likeables.isEmpty()) {
+            return RsData.of("F-3", "이미 호감을 등록한 상대입니다.");
+        }
+
+        // 최대 10명까지 등록가능
+       List<LikeablePerson> likeablePersonList=likeablePersonRepository.findByFromInstaMemberId(fromInstaMember.getId());
+        if(likeablePersonList.size()>9){
+            return RsData.of("F-4","최대 10명까지 등록할 수 있습니다.");
+        }
 
         LikeablePerson likeablePerson = LikeablePerson
                 .builder()
@@ -48,6 +64,7 @@ public class LikeablePersonService {
 
         // 너를 좋아하는 호감표시
         toInstaMember.addToLikeablePerson(likeablePerson);
+
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
     }
 
@@ -59,13 +76,13 @@ public class LikeablePersonService {
         return likeablePersonRepository.findById(id);
     }
 
-@Transactional //트랜잭션은 private로 전파되지 않는다. 실제 구현체에서 제공하는 sava,delete가 아니라면 트랜잭션 붙이기
+    @Transactional //트랜잭션은 private로 전파되지 않는다. 실제 구현체에서 제공하는 sava,delete가 아니라면 트랜잭션 붙이기
     public RsData delete(LikeablePerson likeablePerson){
-
         likeablePersonRepository.delete(likeablePerson);
     String likeCanceledUsername = likeablePerson.getToInstaMember().getUsername();
     return RsData.of("S-1", "%s님에 대한 호감을 취소하였습니다.".formatted(likeCanceledUsername));
     }
+
     public RsData canActorDelete(Member actor, LikeablePerson likeablePerson){
         if (likeablePerson == null) return RsData.of("F-1", "이미 삭제되었습니다.");
 
