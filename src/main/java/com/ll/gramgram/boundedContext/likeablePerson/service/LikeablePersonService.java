@@ -38,14 +38,14 @@ public class LikeablePersonService {
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
 
         //이미 등록한 호감 상대는 등록할 수 x
-        List<LikeablePerson> Likeables = likeablePersonRepository.findByFromInstaMemberIdAndToInstaMemberId(fromInstaMember.getId(), toInstaMember.getId());
-        if (!Likeables.isEmpty()) {
+        List<LikeablePerson> toLikeableList = likeablePersonRepository.findByFromInstaMemberIdAndToInstaMemberId(fromInstaMember.getId(), toInstaMember.getId());
+        if (!toLikeableList.isEmpty()) {
             return RsData.of("F-3", "이미 호감을 등록한 상대입니다.");
         }
 
         // 최대 10명까지 등록가능
-       List<LikeablePerson> likeablePersonList=likeablePersonRepository.findByFromInstaMemberId(fromInstaMember.getId());
-        if(likeablePersonList.size()>9){
+       List<LikeablePerson> fromlikeablePersonList=likeablePersonRepository.findByFromInstaMemberId(fromInstaMember.getId());
+        if(fromlikeablePersonList.size()>9){
             return RsData.of("F-4","최대 10명까지 등록할 수 있습니다.");
         }
 
