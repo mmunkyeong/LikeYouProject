@@ -66,10 +66,10 @@ public class LikeablePersonService {
 
         // 사유가 변경 되었다면, 사유 변경하여 다시 save
         if (update==true){
-            LikeablePerson duplicateAttractive=likeablePerson;
-            duplicateAttractive.setAttractiveTypeCode(attractiveTypeCode);
-            likeablePersonRepository.save(duplicateAttractive);
-            return RsData.of("S-1","호감상대 %s유저 사유 변경".formatted(toInstaMember.getUsername()),duplicateAttractive);
+            LikeablePerson modifyAttraciveTypeCode=likeablePerson;
+            modifyAttraciveTypeCode.setAttractiveTypeCode(attractiveTypeCode);
+            likeablePersonRepository.save(modifyAttraciveTypeCode);
+            return RsData.of("S-1","호감상대 %s유저 사유 변경".formatted(toInstaMember.getUsername()),modifyAttraciveTypeCode);
         }
 
         likeablePersonRepository.save(likeablePerson); // 저장
