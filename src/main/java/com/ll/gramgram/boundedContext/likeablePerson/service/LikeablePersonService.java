@@ -43,10 +43,12 @@ public class LikeablePersonService {
             return RsData.of("F-3", "이미 호감을 등록한 상대입니다.");
         }
 
-        // 등록한 호감상대의 사유가 변경 되었다면, likeable db에서 기존에 추가 되었던 것을 삭제
+        // 이미 등록한 호감 상대의 호감 사유가 다르다면 수정
         else if(!toLikeableList.isEmpty()&&toLikeableAttractiveTypeCode.isEmpty()){
-            update=true;
-            likeablePersonRepository.delete(toLikeableList.get(0));
+            LikeablePerson attractiveTypeCodeModify=toLikeableList.get(0);
+            attractiveTypeCodeModify.setAttractiveTypeCode(attractiveTypeCode);
+            likeablePersonRepository.save(attractiveTypeCodeModify);
+            return RsData.of("S-1","호감상대 %s유저 사유 변경".formatted(toInstaMember.getUsername()),attractiveTypeCodeModify);
         }
 
         // 최대 10명까지 등록가능
@@ -63,14 +65,6 @@ public class LikeablePersonService {
                 .toInstaMemberUsername(toInstaMember.getUsername()) // 중요하지 않음
                 .attractiveTypeCode(attractiveTypeCode) // 1=외모, 2=능력, 3=성격
                 .build();
-
-        // 사유가 변경 되었다면, 사유 변경하여 다시 save
-        if (update==true){
-            LikeablePerson modifyAttraciveTypeCode=likeablePerson;
-            modifyAttraciveTypeCode.setAttractiveTypeCode(attractiveTypeCode);
-            likeablePersonRepository.save(modifyAttraciveTypeCode);
-            return RsData.of("S-1","호감상대 %s유저 사유 변경".formatted(toInstaMember.getUsername()),modifyAttraciveTypeCode);
-        }
 
         likeablePersonRepository.save(likeablePerson); // 저장
         // 너가 좋아하는 호감표시
