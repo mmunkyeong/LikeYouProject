@@ -24,7 +24,7 @@
 - 이미 호감을 표시한 상대가 같은 사유로 호감표시를 했다면, 경고창과 함께 추가 안되도록 구현
     - likeable_person 테이블에서 insert가 되면 안됨
     - 구현 방법: from과 to InstamemberId를 repository에 추가, toInstaMemberId와 attractiveTypeCode를 repository에 추가하여 List로 받아와서 이미 존재하는 from, to id이고 attrativeTypeCode도 같다면 추가되지 않도록 구현
-    - from,to InstaMemberId는 같지만 attractiveTypeCode가 다르다면 기존 attractiveTypeCode는 삭제하고 새로 들어온 attractiveTypeCode를 추가하여 구현
+    - from,to InstaMemberId는 같지만 attractiveTypeCode가 다르다면 변경한 호감 사유로 set하고 save하여 저장 
 
 - 호감 상대는 최대 10명까지 등록가능
     - fromInstaMemberId를 List로 받아와 10명이상일 경우 경고창과 함께 추가 안되도록 구현
@@ -39,12 +39,12 @@
 
 1. 궁금했던 점
 
-   이미 호감을 표시한 상대의 attractiveTypeCode이 같은 경우라면 다시 set을 해주도록 처음에 구현하였지만, 작동은 하는데 db변경이 안되거나 이미 호감을 표시한 상대가 또 다른 사유로 db에 insert되어서 직접 delete 후에 다시 save를 해주었습니다. 왜 attractiveTypeCode를 set 했을 때 update가 안되는지 궁금했습니다.
+   이미 호감을 표시한 상대의 attractiveTypeCode가 변경 되었다면 다시 set하고 저장하였는데, 처음에 DB에 반영되지 않았고 그 이유에 대해 궁금하였는데 attractiveTypeCode로만 Set하여 안 되었던 부분 같았습니다. to,from InstaMemberId로 get하여 가져온 list에 해당하는 attractiveTypeCode를 변경하니 잘 수행되었습니다.
 
 
 2. 아쉬웠던 점
 
-   위의 내용이 이번주 미션을 구현하면서 가장 아쉬웠던 부분 같습니다. 여러 방법을 시도 해봤는데 update가 안 되어서 직접 삭제하고 다시 save를 해주었습니다. update를 할 수 있는 좋은 방법이 있을 거 같아 아쉬웠습니다.
+  각 기능에 대한 테스팅 코드를 작성하지 못한 부분이 가장 아쉬웠던 것 같습니다. 
 
 <br>
 
