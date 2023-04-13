@@ -86,8 +86,15 @@ public class LikeablePersonService {
 
     @Transactional //트랜잭션은 private로 전파되지 않는다. 실제 구현체에서 제공하는 sava,delete가 아니라면 트랜잭션 붙이기
     public RsData delete(LikeablePerson likeablePerson){
+
+        //너가 생성한 좋아요가 사라졌어.
+        likeablePerson.getFromInstaMember().removeToLikeablePerson(likeablePerson);
+
+        //너가 받은 좋아요가 사라졌어.
+        likeablePerson.getToInstaMember().removeToLikeablePerson(likeablePerson);
+
         likeablePersonRepository.delete(likeablePerson);
-    String likeCanceledUsername = likeablePerson.getToInstaMember().getUsername();
+        String likeCanceledUsername = likeablePerson.getToInstaMember().getUsername();
     return RsData.of("S-1", "%s님에 대한 호감을 취소하였습니다.".formatted(likeCanceledUsername));
     }
 
