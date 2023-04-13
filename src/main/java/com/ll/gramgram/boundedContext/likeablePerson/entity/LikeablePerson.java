@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
