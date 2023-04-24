@@ -62,7 +62,7 @@ public class LikeablePersonController {
 
     @PreAuthorize("isAuthenticated()") //로그인 여부 확인
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id){
+    public String cancel(@PathVariable Long id){
 
         LikeablePerson likeablePerson = likeablePersonService.findById(id).orElse(null);
 
