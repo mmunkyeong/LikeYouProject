@@ -5,21 +5,16 @@ import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
-import com.ll.gramgram.boundedContext.member.entity.Member;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/likeablePerson")
@@ -28,23 +23,23 @@ public class LikeablePersonController {
     private final Rq rq;
     private final LikeablePersonService likeablePersonService;
     @PreAuthorize("isAuthenticated()") //로그인 여부 확인
-    @GetMapping("/add")
-    public String showAdd() {
-        return "usr/likeablePerson/add";
+    @GetMapping("/like")
+    public String showLike() {
+        return "usr/likeablePerson/like";
     }
 
     @AllArgsConstructor
     @Getter
-    public static class AddForm {
+    public static class LikeForm {
         private final String username;
         private final int attractiveTypeCode;
     }
 
     @PreAuthorize("isAuthenticated()") //로그인 여부 확인
-    @PostMapping("/add")
-    public String add(@Valid AddForm addForm) {
+    @PostMapping("/like")
+    public String like(@Valid LikeForm likeForm) {
         RsData<LikeablePerson> rsData=likeablePersonService.like(rq.getMember(),
-                addForm.getUsername(),addForm.getAttractiveTypeCode());
+                likeForm.getUsername(),likeForm.getAttractiveTypeCode());
         if(rsData.isFail()){
             return rq.historyBack(rsData);
         }
