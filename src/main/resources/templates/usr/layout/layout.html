@@ -34,7 +34,7 @@
 <!-- 데이지 UI 불러오기 -->
 <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css"/>
 
-<div class="min-h-screen flex flex-col">
+<div class="min-h-screen flex flex-col pb-10">
 <header class="sticky top-0 z-50">
     <div class="navbar max-w-8xl mx-auto bg-base-100">
         <div class="!w-auto flex-grow">
@@ -57,7 +57,12 @@
                     <li th:if="${@rq.login}"><a href="/usr/member/me"  class="btn btn-link"><i class="fa-solid fa-user"></i> 내 정보</a></li>
                     <li th:if="${@rq.login}"><a href="/usr/likeablePerson/like" class="btn btn-link"><i class="fa-solid fa-heart-circle-plus"></i> 호감표시</a></li>
                     <li th:if="${@rq.login}"><a href="/usr/likeablePerson/list"  class="btn btn-link"><i class="fa-solid fa-list-ol"></i> 호감목록</a></li>
-                    <li th:if="${@rq.login}"><a href="/usr/instaMember/connect"  class="btn btn-link"><i class="fa-brands fa-instagram"></i> 인스타 ID 입력</a></li>
+                    <li th:if="${@rq.login}" th:unless="${@rq.member.hasConnectedInstaMember}">
+                        <a href="/usr/instaMember/connect">
+                            <i class="fa-brands fa-instagram"></i>
+                            인스타 아이디 입력
+                        </a>
+                    </li>
                 </ul>
             </div>
            <!-- <span th:if="${@rq.login}" th:text="|${@rq.member.username}님 환영합니다.|"></span>
