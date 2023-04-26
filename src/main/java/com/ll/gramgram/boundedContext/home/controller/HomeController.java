@@ -20,7 +20,7 @@ public class HomeController {
         return "usr/home/main";
     }
 
-    @GetMapping("/debugSession")
+    @GetMapping("/usr/debugSession")
     @ResponseBody
     @PreAuthorize("hasAuthority('admin')")
     public String showDebugSession(HttpSession session) {
