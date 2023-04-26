@@ -51,6 +51,8 @@ public class LikeablePersonService {
         // 너를 좋아하는 호감표시
         toInstaMember.addToLikeablePerson(likeablePerson);
 
+        toInstaMember.increaseLikesCount(fromInstaMember.getGender(), attractiveTypeCode);
+
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
     }
 
@@ -65,6 +67,7 @@ public class LikeablePersonService {
     @Transactional //트랜잭션은 private로 전파되지 않는다. 실제 구현체에서 제공하는 sava,delete가 아니라면 트랜잭션 붙이기
     public RsData cancel(LikeablePerson likeablePerson) {
 
+        likeablePerson.getToInstaMember().decreaseLikesCount(likeablePerson.getFromInstaMember().getGender(), likeablePerson.getAttractiveTypeCode());
         //너가 생성한 좋아요가 사라졌어.
         likeablePerson.getFromInstaMember().removeToLikeablePerson(likeablePerson);
 
