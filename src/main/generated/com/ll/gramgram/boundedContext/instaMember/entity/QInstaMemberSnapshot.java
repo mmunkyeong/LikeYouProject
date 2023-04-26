@@ -11,21 +11,21 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QInstaMember is a Querydsl query type for InstaMember
+ * QInstaMemberSnapshot is a Querydsl query type for InstaMemberSnapshot
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QInstaMember extends EntityPathBase<InstaMember> {
+public class QInstaMemberSnapshot extends EntityPathBase<InstaMemberSnapshot> {
 
-    private static final long serialVersionUID = -53334208L;
+    private static final long serialVersionUID = -1054594780L;
 
-    public static final QInstaMember instaMember = new QInstaMember("instaMember");
+    private static final PathInits INITS = PathInits.DIRECT2;
+
+    public static final QInstaMemberSnapshot instaMemberSnapshot = new QInstaMemberSnapshot("instaMemberSnapshot");
 
     public final QInstaMemberBase _super = new QInstaMemberBase(this);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
-
-    public final ListPath<com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson, com.ll.gramgram.boundedContext.likeablePerson.entity.QLikeablePerson> fromLikeablePeople = this.<com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson, com.ll.gramgram.boundedContext.likeablePerson.entity.QLikeablePerson>createList("fromLikeablePeople", com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson.class, com.ll.gramgram.boundedContext.likeablePerson.entity.QLikeablePerson.class, PathInits.DIRECT2);
 
     //inherited
     public final StringPath gender = _super.gender;
@@ -33,7 +33,7 @@ public class QInstaMember extends EntityPathBase<InstaMember> {
     //inherited
     public final NumberPath<Long> id = _super.id;
 
-    public final ListPath<InstaMemberSnapshot, QInstaMemberSnapshot> instaMemberSnapshots = this.<InstaMemberSnapshot, QInstaMemberSnapshot>createList("instaMemberSnapshots", InstaMemberSnapshot.class, QInstaMemberSnapshot.class, PathInits.DIRECT2);
+    public final QInstaMember instaMember;
 
     //inherited
     public final NumberPath<Long> likes = _super.likes;
@@ -74,20 +74,27 @@ public class QInstaMember extends EntityPathBase<InstaMember> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifyDate = _super.modifyDate;
 
-    public final ListPath<com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson, com.ll.gramgram.boundedContext.likeablePerson.entity.QLikeablePerson> toLikeablePeople = this.<com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson, com.ll.gramgram.boundedContext.likeablePerson.entity.QLikeablePerson>createList("toLikeablePeople", com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson.class, com.ll.gramgram.boundedContext.likeablePerson.entity.QLikeablePerson.class, PathInits.DIRECT2);
-
     public final StringPath username = createString("username");
 
-    public QInstaMember(String variable) {
-        super(InstaMember.class, forVariable(variable));
+    public QInstaMemberSnapshot(String variable) {
+        this(InstaMemberSnapshot.class, forVariable(variable), INITS);
     }
 
-    public QInstaMember(Path<? extends InstaMember> path) {
-        super(path.getType(), path.getMetadata());
+    public QInstaMemberSnapshot(Path<? extends InstaMemberSnapshot> path) {
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QInstaMember(PathMetadata metadata) {
-        super(InstaMember.class, metadata);
+    public QInstaMemberSnapshot(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QInstaMemberSnapshot(PathMetadata metadata, PathInits inits) {
+        this(InstaMemberSnapshot.class, metadata, inits);
+    }
+
+    public QInstaMemberSnapshot(Class<? extends InstaMemberSnapshot> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.instaMember = inits.isInitialized("instaMember") ? new QInstaMember(forProperty("instaMember")) : null;
     }
 
 }
