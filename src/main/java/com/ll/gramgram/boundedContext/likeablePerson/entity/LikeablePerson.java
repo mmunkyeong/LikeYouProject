@@ -49,8 +49,4 @@ public class LikeablePerson extends BaseEntity {
             default -> "<i class=\"fa-solid fa-people-roof\"></i>";
         } + "&nbsp;" + getAttractiveTypeDisplayName();
     }
-
-    public String getJdenticon() {
-        return Ut.hash.sha256(fromInstaMember.getId() + "_likes_" + toInstaMember.getId());
-    }
 }
