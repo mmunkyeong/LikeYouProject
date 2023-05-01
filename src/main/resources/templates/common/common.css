@@ -14,3 +14,7 @@ html > body {
 html > body .label-text {
     font-size: 1rem;
 }
+
+.margin-top-50{
+    margin-top: 50px;
+}

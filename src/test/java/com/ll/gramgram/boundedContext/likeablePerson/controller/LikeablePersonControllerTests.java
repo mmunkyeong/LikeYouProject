@@ -215,6 +215,7 @@ public class LikeablePersonControllerTests {
 
     }
 
+
     @Test
     @DisplayName("호감취소")
     @WithUserDetails("user3")
@@ -396,4 +397,5 @@ public class LikeablePersonControllerTests {
 
         assertThat(newAttractiveTypeCode).isEqualTo(2);
     }
+
 }

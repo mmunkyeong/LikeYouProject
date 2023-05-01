@@ -45,19 +45,19 @@
         }
     </script>
 
-    <div class="flex-grow flex items-center justify-center bg-base-500">
+    <div class="flex-grow flex items-center justify-center bg-base-500 margin-top-50">
         <div class="max-w-2xl w-full px-4">
 
     <form th:action method="POST" class="flex flex-col gap-6"  onsubmit="LoginForm__submit(this); return false;">
-            <label class="label">
+          <!--  <label class="label">
                 <span class="label-text">시작하기</span>
-            </label>
+            </label> -->
         <input type="text" name="username" maxlength="30" placeholder="아이디" class="input input-bordered">
 
-
+<!--
             <label class="label">
                 <span class="label-text">비빌번호</span>
-            </label>
+            </label> -->
         <input type="password" name="password" maxlength="30" placeholder="비밀번호" class="input input-bordered">
 
         <button class="btn btn-block btn-primary gap-1" >
