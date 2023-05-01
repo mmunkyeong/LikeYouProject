@@ -19,8 +19,16 @@ import java.util.List;
 @SuperBuilder
 @ToString(callSuper = true)
 public class InstaMember extends InstaMemberBase {
+    @Setter
     @Column(unique = true)
     private String username;
+
+    @Setter
+    @Column(unique = true)
+    private String oauthId;
+
+    @Setter
+    private String accessToken;
 
     @OneToMany(mappedBy = "fromInstaMember", cascade = {CascadeType.ALL})
     @OrderBy("id desc") // 정렬
