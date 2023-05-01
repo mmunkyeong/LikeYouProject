@@ -319,7 +319,6 @@ public class LikeablePersonControllerTests {
                .andExpect(handler().handlerType(LikeablePersonController.class))
                .andExpect(handler().methodName("like"))
                .andExpect(status().is4xxClientError());
-       ;
    }
     @Test
     @DisplayName("특정인에 대해서 호감표시를 중복으로 시도하면 안된다.")

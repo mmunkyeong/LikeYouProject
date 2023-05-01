@@ -223,4 +223,16 @@ public class LikeablePersonServiceTests {
         assertThat(AppConfig.getLikeablePersonModifyCoolTime()).isGreaterThan(0);
     }
 
+    @Test
+    @DisplayName("호감표시를 하면 쿨타임이 지정된다.")
+    void t007() throws Exception {
+        LocalDateTime coolTime = AppConfig.genLikeablePersonModifyUnlockDate();
+
+        Member memberUser3 = memberService.findByUsername("user3").orElseThrow();
+        LikeablePerson likeablePersonToBts = likeablePersonService.like(memberUser3, "bts", 3).getData();
+
+        assertThat(
+                likeablePersonToBts.getModifyUnlockDate().isAfter(coolTime)
+        ).isTrue();
+    }
 }
