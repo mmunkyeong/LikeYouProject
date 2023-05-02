@@ -16,6 +16,9 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -141,8 +144,6 @@ public class LikeablePersonService {
     public RsData<LikeablePerson> modifyAttractive(Member actor, Long id, int attractiveTypeCode) {
         Optional<LikeablePerson> likeablePersonOptional = findById(id);
 
-
-
         if (likeablePersonOptional.isEmpty()) {
             return RsData.of("F-1", "존재하지 않는 호감표시입니다.");
         }
@@ -152,7 +153,7 @@ public class LikeablePersonService {
         return modifyAttractive(actor, likeablePerson, attractiveTypeCode);
     }
 
-    @Transactional
+
     public RsData<LikeablePerson> modifyAttractive(Member actor, LikeablePerson likeablePerson, int attractiveTypeCode) {
         RsData canModifyRsData = canModifyLike(actor, likeablePerson);
 
@@ -183,12 +184,13 @@ public class LikeablePersonService {
         if (fromLikeablePerson == null) {
             return RsData.of("F-7", "호감표시를 하지 않았습니다.");
         }
-
         return modifyAttractive(actor, fromLikeablePerson, attractiveTypeCode);
     }
 
     private void modifyAttractionTypeCode(LikeablePerson likeablePerson, int attractiveTypeCode) {
         int oldAttractiveTypeCode = likeablePerson.getAttractiveTypeCode();
+        LocalDateTime okTime=likeablePerson.getModifyDate();
+
         RsData rsData = likeablePerson.updateAttractionTypeCode(attractiveTypeCode);
 
         if (rsData.isSuccess()) {
