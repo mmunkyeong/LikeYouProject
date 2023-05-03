@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Configuration
 @Profile({"dev", "test"})
 public class NotProd {
+
     @Bean
     CommandLineRunner initData(
             MemberService memberService,
