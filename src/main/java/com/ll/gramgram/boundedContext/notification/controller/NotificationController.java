@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -19,7 +20,13 @@ public class NotificationController {
     private final Rq rq;
     private final NotificationService notificationService;
 
+    @PreAuthorize("isAuthenticated()") //로그인 여부 확인
     @GetMapping("/list")
+    public String showList() {
+        return "usr/notification/list";
+    }
+
+    @PostMapping("/list")
     @PreAuthorize("isAuthenticated()")
     public String showList(Model model) {
         if (!rq.getMember().hasConnectedInstaMember()) {
@@ -32,4 +39,5 @@ public class NotificationController {
 
         return "usr/notification/list";
     }
+
 }

@@ -5,6 +5,8 @@ import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
+import com.ll.gramgram.boundedContext.notification.entity.Notification;
+import com.ll.gramgram.boundedContext.notification.service.NotificationService;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +22,8 @@ public class NotProd {
     CommandLineRunner initData(
             MemberService memberService,
             InstaMemberService instaMemberService,
-            LikeablePersonService likeablePersonService
+            LikeablePersonService likeablePersonService,
+            NotificationService notificationService
     ) {
         return new CommandLineRunner() {
             @Override

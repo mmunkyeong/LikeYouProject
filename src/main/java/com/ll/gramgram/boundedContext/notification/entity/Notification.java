@@ -35,4 +35,8 @@ public class Notification extends BaseEntity {
 
     private String newGender; // 해당사항 없으면 null
     private int newAttractiveTypeCode; // 해당사항 없으면
+
+    public String getTypeCode(String typeCode){
+        return typeCode;
+    }
 }
