@@ -5,6 +5,7 @@ import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
+import com.ll.gramgram.boundedContext.member.entity.Member;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 @Controller
 @RequestMapping("/usr/likeablePerson")
 @RequiredArgsConstructor
@@ -121,16 +123,44 @@ public class LikeablePersonController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/toList")
-    public String showToList(Model model) {
+    public String showToList(@RequestParam(value = "gender", required = false) String gender,
+                             @RequestParam(value = "attractiveTypeCode", defaultValue = "0") int attractiveTypeCode,
+                             @RequestParam(value = "sortCode", defaultValue = "1") int sortCode,
+                             Model model) {
+
         InstaMember instaMember = rq.getMember().getInstaMember();
 
         // 인스타인증을 했는지 체크
         if (instaMember != null) {
-            // 해당 인스타회원이 좋아하는 사람들 목록
+            //당신을 좋아하는 사람들 목록
             List<LikeablePerson> likeablePeople = instaMember.getToLikeablePeople();
-            model.addAttribute("likeablePeople", likeablePeople);
-        }
+            Stream<LikeablePerson> filteredPeople = instaMember.getToLikeablePeople().stream();
 
+            // 필터링 없이 모든 데이터 보이게 하기
+            if (gender == null && attractiveTypeCode == 0 && sortCode == 1) {
+                model.addAttribute("likeablePeople", likeablePeople);
+            }
+
+            else { // 필터링된 데이터
+                if (gender != null) { // 성별로 필터링
+                    filteredPeople = filteredPeople
+                            .filter(person -> person.getFromInstaMember().getGender().equals(gender));
+                }
+                if (attractiveTypeCode != 0) { // 호감사유로 필터링
+                    filteredPeople = filteredPeople
+                            .filter(person -> person.getAttractiveTypeCode() == attractiveTypeCode);
+                }
+                if(gender!=null && attractiveTypeCode!=0){ // 성별, 호감사유로 필터링 (둘 다 충족)
+                    filteredPeople = filteredPeople
+                            .filter(person -> person.getFromInstaMember().getGender().equals(gender))
+                            .filter(person -> person.getAttractiveTypeCode() == attractiveTypeCode);
+                }
+
+                List<LikeablePerson> likeablePersonList=filteredPeople.collect(Collectors.toList());
+                model.addAttribute("likeablePeople", likeablePersonList);
+            }
+        }
         return "usr/likeablePerson/toList";
     }
+
 }
