@@ -136,7 +136,7 @@ public class LikeablePersonController {
         // 인스타인증을 했는지 체크
         if (instaMember != null) {
             //당신을 좋아하는 사람들 목록
-            if (gender != null) { // 성별로 필터링
+            if (gender != null&& !gender.isBlank()) { // 성별로 필터링
                 filteredPeople = filteredPeople
                         .filter(person -> person.getFromInstaMember().getGender().equals(gender));
             }
