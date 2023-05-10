@@ -49,6 +49,9 @@ public class NotProd {
                 LikeablePerson likeablePersonToInstaUser4 = likeablePersonService.like(memberUser3, "insta_user4", 1).getData();
                 Ut.reflection.setFieldValue(likeablePersonToInstaUser4, "modifyUnlockDate", LocalDateTime.now().minusSeconds(1));
 
+                LikeablePerson likeablePersonToInstaUser3 = likeablePersonService.like(memberUser4, "insta_user3", 3).getData();
+                Ut.reflection.setFieldValue(likeablePersonToInstaUser3, "modifyUnlockDate", LocalDateTime.now().minusSeconds(1));
+
                 LikeablePerson likeablePersonToInstaUser2 = likeablePersonService.like(memberUser2, "insta_user4", 2).getData();
                 Ut.reflection.setFieldValue(likeablePersonToInstaUser2, "modifyUnlockDate", LocalDateTime.now().minusSeconds(1));
 
