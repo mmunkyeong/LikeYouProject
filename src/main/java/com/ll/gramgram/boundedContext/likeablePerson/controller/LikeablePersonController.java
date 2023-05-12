@@ -127,52 +127,52 @@ public class LikeablePersonController {
     @GetMapping("/toList")
     public String showToList(Model model, @RequestParam(defaultValue = "") String gender, @RequestParam(defaultValue = "0") int attractiveTypeCode, @RequestParam(defaultValue = "1") int sortCode) {
         InstaMember instaMember = rq.getMember().getInstaMember();
-        Stream<LikeablePerson> filteredPeople = instaMember.getToLikeablePeople().stream();
 
         // 인스타인증을 했는지 체크
         if (instaMember != null) {
             //당신을 좋아하는 사람들 목록
-            if (!gender.isEmpty()) { // 성별로 필터링
-                filteredPeople = filteredPeople
-                        .filter(person -> person.getFromInstaMember().getGender().equals(gender));
-            }
-            if (attractiveTypeCode != 0) { // 호감사유로 필터링
-                filteredPeople = filteredPeople
-                        .filter(person -> person.getAttractiveTypeCode() == attractiveTypeCode);
-            }
-            if (!gender.isEmpty() && attractiveTypeCode != 0) { // 성별, 호감사유로 필터링 (둘 다 충족)
-                filteredPeople = filteredPeople
-                        .filter(person -> person.getFromInstaMember().getGender().equals(gender))
-                        .filter(person -> person.getAttractiveTypeCode() == attractiveTypeCode);
+            Stream<LikeablePerson> likeablePeopleStream = instaMember.getToLikeablePeople().stream();
+
+            if (!gender.isEmpty()) {
+                likeablePeopleStream = likeablePeopleStream
+                        .filter(likeablePerson -> likeablePerson.getFromInstaMember().getGender().equals(gender));
             }
 
-            Comparator<LikeablePerson> primaryComparator;
-            List<LikeablePerson> likeablePeople;
-            switch (sortCode) {
-                case 2: // 날짜순 (오래전에 받은 호감표시 우선)
-                    primaryComparator = Comparator.comparing(LikeablePerson::getId);
-                    break;
-                case 3: // 인기 많은 순 member.instaMember.likes
-                    primaryComparator = Comparator.comparing(LikeablePerson::getFromInstaMember,
-                            Comparator.comparingLong(InstaMember::getLikes).reversed());
-                    break;
-                case 4: // 인기 적은 순
-                    primaryComparator = Comparator.comparing(LikeablePerson::getFromInstaMember,
-                            Comparator.comparingLong(InstaMember::getLikes));
-                    break;
-                case 5: // 성별순 (여성에게 받은 호감표시 먼저)
-                    primaryComparator = Comparator.comparing(LikeablePerson::getFromInstaMember,
-                            Comparator.comparing(InstaMember::getGender)).reversed();
-                    break;
-                case 6: // 호감사유순 (외모, 성격, 능력 순)
-                    primaryComparator = Comparator.comparing(LikeablePerson::getAttractiveTypeCode);
-                    break;
-                default: // 기본값인 경우 최신순으로 정렬
-                    primaryComparator = Comparator.comparing(LikeablePerson::getCreateDate).reversed();
-                    break;
+            if (attractiveTypeCode != 0) {
+                likeablePeopleStream = likeablePeopleStream
+                        .filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == attractiveTypeCode);
             }
-            filteredPeople = filteredPeople.sorted(primaryComparator);
-            likeablePeople = filteredPeople.collect(Collectors.toList());
+
+            switch (sortCode) {
+                case 2:
+                    likeablePeopleStream = likeablePeopleStream.sorted(
+                            Comparator.comparing(LikeablePerson::getId)
+                    );
+                    break;
+                case 3:
+                    likeablePeopleStream = likeablePeopleStream.sorted(
+                            Comparator.comparing((LikeablePerson lp) -> lp.getFromInstaMember().getLikes()).reversed()
+                    );
+                    break;
+                case 4:
+                    likeablePeopleStream = likeablePeopleStream.sorted(
+                            Comparator.comparing(lp -> lp.getFromInstaMember().getLikes())
+                    );
+                    break;
+                case 5:
+                    likeablePeopleStream = likeablePeopleStream
+                            .sorted(Comparator.comparing((LikeablePerson lp) -> lp.getFromInstaMember().getGender()).reversed()
+                                    .thenComparing(Comparator.comparing(LikeablePerson::getId).reversed()));
+                    break;
+                case 6:
+                    likeablePeopleStream = likeablePeopleStream
+                            .sorted(Comparator.comparing(LikeablePerson::getAttractiveTypeCode)
+                                    .thenComparing(Comparator.comparing(LikeablePerson::getId).reversed()));
+                    break;
+
+            }
+
+            List<LikeablePerson> likeablePeople = likeablePeopleStream.collect(Collectors.toList());
             model.addAttribute("likeablePeople", likeablePeople);
         }
         return "usr/likeablePerson/toList";
