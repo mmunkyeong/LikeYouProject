@@ -125,18 +125,14 @@ public class LikeablePersonController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/toList")
-    public String showToList(String gender,
-                             @RequestParam(value = "attractiveTypeCode", defaultValue = "0") int attractiveTypeCode,
-                             @RequestParam(value = "sortCode", defaultValue = "1") int sortCode,
-                             Model model) {
-
+    public String showToList(Model model, @RequestParam(defaultValue = "") String gender, @RequestParam(defaultValue = "0") int attractiveTypeCode, @RequestParam(defaultValue = "1") int sortCode) {
         InstaMember instaMember = rq.getMember().getInstaMember();
         Stream<LikeablePerson> filteredPeople = instaMember.getToLikeablePeople().stream();
 
         // 인스타인증을 했는지 체크
         if (instaMember != null) {
             //당신을 좋아하는 사람들 목록
-            if (gender != null&& !gender.isBlank()) { // 성별로 필터링
+            if (!gender.isEmpty()) { // 성별로 필터링
                 filteredPeople = filteredPeople
                         .filter(person -> person.getFromInstaMember().getGender().equals(gender));
             }
@@ -144,7 +140,7 @@ public class LikeablePersonController {
                 filteredPeople = filteredPeople
                         .filter(person -> person.getAttractiveTypeCode() == attractiveTypeCode);
             }
-            if (gender != null && attractiveTypeCode != 0) { // 성별, 호감사유로 필터링 (둘 다 충족)
+            if (!gender.isEmpty() && attractiveTypeCode != 0) { // 성별, 호감사유로 필터링 (둘 다 충족)
                 filteredPeople = filteredPeople
                         .filter(person -> person.getFromInstaMember().getGender().equals(gender))
                         .filter(person -> person.getAttractiveTypeCode() == attractiveTypeCode);
