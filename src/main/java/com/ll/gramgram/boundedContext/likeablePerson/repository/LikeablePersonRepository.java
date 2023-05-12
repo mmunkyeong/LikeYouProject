@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.likeablePerson.repository;
 
+import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,6 +15,5 @@ public interface LikeablePersonRepository extends JpaRepository<LikeablePerson, 
     LikeablePerson findByFromInstaMemberIdAndToInstaMember_username(long fromInstaMemberId, String username);
 
     Optional<LikeablePerson> findByFromInstaMember_usernameAndToInstaMember_username(String fromInstaMemberUsername, String toInstaMemberUsername);
-
-
+    List<LikeablePerson> findQslByToInstaMemberAndGenderAndAttractiveTypeCode(InstaMember instaMember, String gender, int attractiveTypeCode, int sortCode);
 }
