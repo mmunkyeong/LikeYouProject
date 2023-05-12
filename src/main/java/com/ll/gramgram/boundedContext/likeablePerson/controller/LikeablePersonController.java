@@ -150,7 +150,7 @@ public class LikeablePersonController {
             List<LikeablePerson> likeablePeople;
             switch (sortCode) {
                 case 2: // 날짜순 (오래전에 받은 호감표시 우선)
-                    primaryComparator = Comparator.comparing(LikeablePerson::getCreateDate);
+                    primaryComparator = Comparator.comparing(LikeablePerson::getId);
                     break;
                 case 3: // 인기 많은 순 member.instaMember.likes
                     primaryComparator = Comparator.comparing(LikeablePerson::getFromInstaMember,
