@@ -14,13 +14,14 @@
             <div th:unless="${!#lists.isEmpty(likeablePeople)}" class="text-center">
                 <div><i class="fa-regular fa-face-laugh"></i> 목록이 비어있습니다. 당신이 받은 호감을 보여줍니다.</div>
             </div>
+        </th:block>
 
             <h1 class="mb-4" th:if="${!#lists.isEmpty(likeablePeople)}">
                 <i class="fa-solid fa-list-ol"></i>
                 당신을 좋아하는 사람들
             </h1>
 
-            <div class="card bg-base-100 shadow-xl">
+        <div class="card bg-base-100 shadow-xl" th:if="${!#lists.isEmpty(likeablePeople)}">
                 <div class="card-body">
                     <form class="flex flex-col gap-6">
                         <div class="form-control">
@@ -96,13 +97,21 @@
                         <div class="card-body">
                             <div class="mt-4 mb-2 flex flex-col gap-2">
                                 <div>
-                                    <i class="fa-regular fa-face-laugh-beam"></i>
-                                    호감표시자
+                                    <i class="fa-solid fa-heart"></i>
+                                    번호
                                 </div>
-                                <svg th:data-jdenticon-value="|${likeablePerson.jdenticon}|" width="120"
-                                     height="120"></svg>
+                                <span class="badge badge-primary"
+                                      th:text="|${likeablePerson.id}번|"></span>
                             </div>
 
+                            <div class="mt-4 mb-2 flex flex-col gap-2">
+                                <div>
+                                    <i class="fa-solid fa-chart-line"></i>
+                                    인기
+                                </div>
+                                <span class="badge badge-primary"
+                                      th:text="|${#numbers.formatInteger(likeablePerson.fromInstaMember.likes, 0, 'COMMA')}|"></span>
+                            </div>
                             <div class="mt-4 mb-2 flex flex-col gap-2">
                                 <div>
                                     <i class="fa-regular fa-clock"></i>
