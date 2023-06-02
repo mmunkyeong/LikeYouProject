@@ -2,14 +2,12 @@ package com.ll.gramgram.boundedContext.notification.service;
 
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
-import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.notification.entity.Notification;
 import com.ll.gramgram.boundedContext.notification.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.List;
 
@@ -22,15 +20,16 @@ public class NotificationService {
     public List<Notification> findByToInstaMember(InstaMember toInstaMember) {
         return notificationRepository.findByToInstaMemberOrderByIdDesc(toInstaMember);
     }
+
     @Transactional
     public RsData<Notification> makeLike(LikeablePerson likeablePerson) {
         return make(likeablePerson, "LIKE", 0, null);
     }
 
-@Transactional
+    @Transactional
     public RsData<Notification> makeModifyAttractive(LikeablePerson likeablePerson, int oldAttractiveTypeCode) {
-    return make(likeablePerson, "MODIFY_ATTRACTIVE_TYPE", oldAttractiveTypeCode, likeablePerson.getFromInstaMember().getGender());
-}
+        return make(likeablePerson, "MODIFY_ATTRACTIVE_TYPE", oldAttractiveTypeCode, likeablePerson.getFromInstaMember().getGender());
+    }
 
     private RsData<Notification> make(LikeablePerson likeablePerson, String typeCode, int oldAttractiveTypeCode, String oldGender) {
         Notification notification = Notification

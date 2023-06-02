@@ -1,4 +1,4 @@
-<html layout:decorate="~{usr/layout/layout.html}">
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
 
 <head>
     <title th:text="#{c.pageNameStart}"></title>
@@ -7,6 +7,7 @@
 <body>
 
 <main layout:fragment="main" class="flex-grow flex items-center justify-center">
+
     <div class="hidden" id="msg-loginFormNeedInputUsername" th:text="#{c.loginFormNeedInputUsername}"></div>
     <div class="hidden" id="msg-loginFormNeedInputUsernameMoreThan"
          th:text="${@rq.getCText('c.loginFormNeedInputUsernameMoreThan', loginFormInputUsernameValueMinLength)}"></div>
@@ -14,10 +15,9 @@
     <div class="hidden" id="msg-loginFormNeedInputPasswordMoreThan"
          th:text="#{c.loginFormNeedInputPasswordMoreThan(${loginFormInputPasswordValueMinLength})}"></div>
 
-    <script th:inline="javascript">
+    <script>
         const loginFormInputUsernameValueMinLength = 4;
         const loginFormInputPasswordValueMinLength = 4;
-
 
         function LoginForm__submit(form) {
             // username 이(가) 올바른지 체크
@@ -30,7 +30,7 @@
                 return;
             }
 
-            if (form.username.value.length <loginFormInputUsernameValueMinLength) {
+            if (form.username.value.length < loginFormInputUsernameValueMinLength) {
                 toastWarning($("#msg-loginFormNeedInputUsernameMoreThan").text());
                 form.username.focus();
                 return;
@@ -41,8 +41,9 @@
             form.password.value = form.password.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
 
             if (form.password.value.length === 0) {
-                form.password.focus();
                 toastWarning($("#msg-loginFormNeedInputPassword").text());
+                form.password.focus();
+                toastWarning(msgNeedInputPassword);
                 return;
             }
 
@@ -79,7 +80,7 @@
                     <label class="label">
                         <span class="label-text">
                             <i class="fa-solid fa-key"></i>
-                          <span th:text="#{c.loginFormPassword}"></span>
+                            <span th:text="#{c.loginFormPassword}"></span>
                         </span>
                     </label>
                     <input type="password" name="password" th:placeholder="#{c.loginFormPassword}"

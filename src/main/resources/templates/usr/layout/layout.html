@@ -57,13 +57,16 @@
                             <span th:text="#{c.pageNameListOfLikes}"></span>
                         </a>
                     </li>
+
                     <li th:if="${@rq.login}" th:unless="${@rq.member.hasConnectedInstaMember}">
                         <a href="/usr/instaMember/connectByApi">
                             <th:block th:utext="#{c.iconLinkingInstagram}"></th:block>
                             <span th:text="#{c.pageNameLinkingInstagram}"></span>
                         </a>
                     </li>
+
                     <div th:if="${@rq.login}" class="divider"></div>
+
                     <li>
                         <a href="/usr/home/about">
                             <th:block th:utext="#{c.iconWhatIsThisService}"></th:block>
@@ -78,8 +81,8 @@
                         <form class="!hidden" hidden th:action="|/usr/member/logout|" method="POST"></form>
                     </li>
                 </ul>
+            </div>
         </div>
-    </div>
         <div class="navbar-center">
             <a href="/" class="btn btn-ghost normal-case text-xl">
                 <span class="hidden min-[339px]:inline" th:utext="#{c.logoTextWithEmojiEn}"></span>
@@ -103,8 +106,6 @@
         </div>
     </div>
 </header>
+
 </body>
-
 </html>
-
-
